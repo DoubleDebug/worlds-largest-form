@@ -1,4 +1,5 @@
 import "./App.css";
+import { Form } from "./components/Form";
 import { useCounterStore } from "./stores/counter";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <div className="card">
         <button onClick={increment}>count is {count}</button>
       </div>
+      <Form />
     </>
   );
 }
