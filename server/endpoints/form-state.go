@@ -6,7 +6,7 @@ import (
 	"wlf/utils"
 )
 
-func GetAllFormTypes(w http.ResponseWriter, _ *http.Request) {
+func GetFormState(w http.ResponseWriter, _ *http.Request) {
 	db, err := utils.GetDatabaseConnection()
 	if err != nil {
 		log.Fatal(err)
@@ -14,8 +14,8 @@ func GetAllFormTypes(w http.ResponseWriter, _ *http.Request) {
 	}
 	defer db.Close()
 
-	// 1) fetch all form types from the database
-	rows, err := db.Query("SELECT * FROM type")
+	// 1) fetch all inputs and their values from the database
+	rows, err := db.Query("SELECT * FROM input JOIN input_value ON input.id = input_value.id")
 	if err != nil {
 		log.Fatal(err)
 		return

@@ -44,27 +44,47 @@ func RowsToJsonString(rows *sql.Rows) (string, error) {
 		for i, v := range columnTypes {
 
 			if z, ok := (scanArgs[i]).(*sql.NullBool); ok {
-				masterData[v.Name()] = z.Bool
+				if z.Valid {
+					masterData[v.Name()] = z.Bool
+				} else {
+					masterData[v.Name()] = nil
+				}
 				continue
 			}
 
 			if z, ok := (scanArgs[i]).(*sql.NullString); ok {
-				masterData[v.Name()] = z.String
+				if z.Valid {
+					masterData[v.Name()] = z.String
+				} else {
+					masterData[v.Name()] = nil
+				}
 				continue
 			}
 
 			if z, ok := (scanArgs[i]).(*sql.NullInt64); ok {
-				masterData[v.Name()] = z.Int64
+				if z.Valid {
+					masterData[v.Name()] = z.Int64
+				} else {
+					masterData[v.Name()] = nil
+				}
 				continue
 			}
 
 			if z, ok := (scanArgs[i]).(*sql.NullFloat64); ok {
-				masterData[v.Name()] = z.Float64
+				if z.Valid {
+					masterData[v.Name()] = z.Float64
+				} else {
+					masterData[v.Name()] = nil
+				}
 				continue
 			}
 
 			if z, ok := (scanArgs[i]).(*sql.NullInt32); ok {
-				masterData[v.Name()] = z.Int32
+				if z.Valid {
+					masterData[v.Name()] = z.Int32
+				} else {
+					masterData[v.Name()] = nil
+				}
 				continue
 			}
 
