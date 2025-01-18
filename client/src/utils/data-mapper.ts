@@ -1,4 +1,5 @@
-import { InputType, InputValue, ServerInputValue } from "../types/form";
+import type { InputType, InputValue } from "../types/client/form";
+import type { ServerInputValue } from "../types/server/form";
 
 export const DataMapper = {
   toInputType(value: ServerInputValue): InputType {
@@ -44,5 +45,20 @@ export const DataMapper = {
       bool_value: value.type === "bool" ? value.value : null,
       select_option: value.type === "select" ? value.value : null,
     };
+  },
+
+  toWsState(readyState: number) {
+    switch (readyState) {
+      case WebSocket.CLOSED:
+        return "CLOSED";
+      case WebSocket.CONNECTING:
+        return "CONNECTING";
+      case WebSocket.OPEN:
+        return "OPEN";
+      case WebSocket.CLOSING:
+        return "CLOSING";
+      default:
+        return null as never;
+    }
   },
 };

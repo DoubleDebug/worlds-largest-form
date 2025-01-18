@@ -10,6 +10,7 @@
     SelectContent,
     SelectItem,
   } from "$lib/components/ui/select";
+  import { formState } from "../store/form-state.svelte";
 
   const { type, id: _id }: FormInputProps = $props();
   const id = String(_id);
@@ -17,7 +18,7 @@
 
 <div class="input">
   {#if type === "text"}
-    <Input {id} />
+    <Input {id} bind:value={formState[_id].value} />
   {:else if type === "number"}
     <Slider {id} />
   {:else if type === "bool"}
