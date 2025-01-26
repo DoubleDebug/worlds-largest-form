@@ -1,21 +1,23 @@
 import { FC } from "react";
-import { FormType } from "../types/form";
-import { Checkbox, Input, Select, Slider } from "@mui/joy";
+import { InputValue } from "../types/client/form";
+import { Checkbox, Input, Option, Select, Slider } from "@mui/joy";
 
-type Props = {
-  type: FormType;
-};
-
-export const FormInput: FC<Props> = (props) => {
+export const FormInput: FC<InputValue> = (props) => {
   switch (props.type) {
-    case "checkbox":
-      return <Checkbox />;
-    case "slider":
-      return <Slider />;
+    case "bool":
+      return <Checkbox checked={props.value ?? false} />;
+    case "number":
+      return <Slider value={props.value ?? 0} />;
     case "select":
-      return <Select />;
-    case "textbox":
-      return <Input />;
+      return (
+        <Select value={props.value}>
+          <Option value={1}>System</Option>
+          <Option value={2}>Light</Option>
+          <Option value={3}>Dark</Option>
+        </Select>
+      );
+    case "text":
+      return <Input value={props.value ?? ""} />;
     default:
       return null;
   }
