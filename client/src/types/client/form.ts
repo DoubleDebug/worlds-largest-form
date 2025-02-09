@@ -34,3 +34,9 @@ export type InputValue =
 export type FormState = {
   values: InputValue[];
 };
+
+export type SelectOption = {
+  id: number;
+  inputId: number;
+  name: string;
+};

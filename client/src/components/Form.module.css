@@ -1,0 +1,14 @@
+form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 calc(100% / 10 - 16px);
+  height: 100px;
+}

@@ -1,40 +1,29 @@
+import styles from "./Form.module.css";
 import { Box } from "@mui/joy";
-import { FC, useEffect } from "react";
 import { FormInput } from "./FormInput";
-import { useFormState } from "../stores/form";
-import { handleConnect, handleDisconnect } from "../stores/websocket";
+import { FC, useEffect, useState } from "react";
+import { useFormState } from "../hooks/useFormState";
+import { handleConnect, handleDisconnect } from "../utils/websocket";
 
 export const Form: FC = () => {
   const { values } = useFormState();
+  const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
 
   useEffect(() => {
-    handleConnect();
+    if (isFirstTime && values.length > 0) {
+      handleConnect();
+      setIsFirstTime(false);
+    }
+  }, [isFirstTime, values]);
 
+  useEffect(() => {
     return () => handleDisconnect();
   }, []);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        alignItems: "center",
-        gap: "8px",
-        "& > *": {
-          flex: `1 1 calc(100% / 10 - 16px)`,
-          height: "100px",
-        },
-      }}
-    >
+    <Box component="form">
       {values.map((value) => (
-        <Box
-          key={value.id}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Box key={value.id} className={styles["input-container"]}>
           <FormInput {...value} />
         </Box>
       ))}

@@ -1,17 +1,20 @@
-import type { ServerInputValue } from "../types/server/form";
-import type { InputType, InputValue } from "../types/client/form";
+import type {
+  ServerInputValue,
+  ServerSelectOption,
+} from "../types/server/form";
+import type { InputType, InputValue, SelectOption } from "../types/client/form";
 
 export const DataMapper = {
   toInputType(value: ServerInputValue): InputType {
     if (value.text_value !== null) return "text";
     if (value.number_value !== null) return "number";
     if (value.bool_value !== null) return "bool";
-    if (value.select_option !== null) return "select";
+    if (value.select_value !== null) return "select";
 
     return null as never;
   },
 
-  toServerColumnName(inputType: InputType) {
+  toServerColumnName(inputType: InputType): keyof ServerInputValue {
     switch (inputType) {
       case "text":
         return "text_value";
@@ -20,15 +23,15 @@ export const DataMapper = {
       case "bool":
         return "bool_value";
       case "select":
-        return "select_option";
+        return "select_value";
       default:
         return null as never;
     }
   },
 
   toInputValue(value: ServerInputValue): InputValue {
-    const type = this.toInputType(value);
-    const columnName = this.toServerColumnName(type);
+    const type = DataMapper.toInputType(value);
+    const columnName = DataMapper.toServerColumnName(type);
 
     return {
       id: value.id,
@@ -43,7 +46,7 @@ export const DataMapper = {
       text_value: value.type === "text" ? value.value : null,
       number_value: value.type === "number" ? value.value : null,
       bool_value: value.type === "bool" ? value.value : null,
-      select_option: value.type === "select" ? value.value : null,
+      select_value: value.type === "select" ? value.value : null,
     };
   },
 
@@ -60,5 +63,13 @@ export const DataMapper = {
       default:
         return null as never;
     }
+  },
+
+  toSelectOption(option: ServerSelectOption): SelectOption {
+    return {
+      id: option.option_index,
+      inputId: option.input_id,
+      name: option.option_name,
+    };
   },
 };
