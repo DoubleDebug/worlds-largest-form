@@ -6,10 +6,16 @@ import (
 	"wlf/utils"
 )
 
-func GetAllFormTypes(w http.ResponseWriter, _ *http.Request) {
+func GetAllFormTypes(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
 	db, err := utils.GetDatabaseConnection()
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	defer db.Close()
@@ -18,6 +24,7 @@ func GetAllFormTypes(w http.ResponseWriter, _ *http.Request) {
 	rows, err := db.Query("SELECT * FROM type")
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -25,6 +32,7 @@ func GetAllFormTypes(w http.ResponseWriter, _ *http.Request) {
 	json, err := utils.RowsToJsonString(rows)
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
